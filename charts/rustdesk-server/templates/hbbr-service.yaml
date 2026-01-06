@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rustdesk-server.fullname" . }}-hbbr
+  labels:
+    {{- include "rustdesk-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: hbbr
+  {{- if .Values.loadBalancer.enabled }}
+  {{- with .Values.loadBalancer.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+spec:
+  type: {{- if .Values.loadBalancer.enabled }} LoadBalancer {{- else }} {{ .Values.hbbr.service.type }} {{- end }}
+  ports:
+  - name: relay
+    port: {{ .Values.hbbr.service.relay.port }}
+    targetPort: relay
+    protocol: {{ .Values.hbbr.service.relay.protocol }}
+  - name: web-client
+    port: {{ .Values.hbbr.service.webClient.port }}
+    targetPort: web-client
+    protocol: {{ .Values.hbbr.service.webClient.protocol }}
+  selector:
+    {{- include "rustdesk-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: hbbr

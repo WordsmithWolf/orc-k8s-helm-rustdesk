@@ -1,0 +1,48 @@
+apiVersion: v2
+name: rustdesk-server
+description: A Helm chart for deploying RustDesk self-hosted server on Kubernetes with arm64 support and Bitwarden Secrets Manager integration
+type: application
+version: 1.0.1
+appVersion: "latest"
+keywords:
+  - rustdesk
+  - remote-desktop
+  - self-hosted
+  - arm64
+  - raspberry-pi
+  - bitwarden
+home: https://github.com/sachajw/orc-k8s-helm-rustdesk
+sources:
+  - https://github.com/sachajw/orc-k8s-helm-rustdesk
+  - https://github.com/rustdesk/rustdesk-server
+maintainers:
+  - name: Sacha Wharton
+    email: sachajw@gmail.com
+    url: https://github.com/sachajw
+icon: https://rustdesk.com/images/logo.svg
+annotations:
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/license: MIT
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/bitwarden/bitwarden-sm-operator
+  artifacthub.io/links: |
+    - name: RustDesk Documentation
+      url: https://rustdesk.com/docs/
+    - name: Bitwarden Integration Guide
+      url: https://github.com/sachajw/orc-k8s-helm-rustdesk/blob/main/charts/rustdesk-server/BITWARDEN_INTEGRATION.md
+    - name: Quick Start Guide
+      url: https://github.com/sachajw/orc-k8s-helm-rustdesk/blob/main/charts/rustdesk-server/QUICKSTART.md
+  artifacthub.io/changes: |
+    - kind: added
+      description: Initial release with RustDesk server support
+    - kind: added
+      description: ARM64/Raspberry Pi support
+    - kind: added
+      description: Bitwarden Secrets Manager integration
+    - kind: added
+      description: Automatic encryption key extraction
+    - kind: added
+      description: MetalLB LoadBalancer support
+  artifacthub.io/containsSecurityUpdates: "false"

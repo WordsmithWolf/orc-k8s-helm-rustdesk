@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rustdesk-server.fullname" . }}-hbbs
+  labels:
+    {{- include "rustdesk-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: hbbs
+  {{- if .Values.loadBalancer.enabled }}
+  {{- with .Values.loadBalancer.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+spec:
+  type: {{- if .Values.loadBalancer.enabled }} LoadBalancer {{- else }} {{ .Values.hbbs.service.type }} {{- end }}
+  ports:
+  - name: nat-test
+    port: {{ .Values.hbbs.service.natTest.port }}
+    targetPort: nat-test
+    protocol: {{ .Values.hbbs.service.natTest.protocol }}
+  - name: reg-tcp
+    port: {{ .Values.hbbs.service.registration.port }}
+    targetPort: reg-tcp
+    protocol: {{ .Values.hbbs.service.registration.protocol }}
+  - name: reg-udp
+    port: {{ .Values.hbbs.service.registrationUdp.port }}
+    targetPort: reg-udp
+    protocol: {{ .Values.hbbs.service.registrationUdp.protocol }}
+  - name: web-client
+    port: {{ .Values.hbbs.service.webClient.port }}
+    targetPort: web-client
+    protocol: {{ .Values.hbbs.service.webClient.protocol }}
+  {{- if .Values.hbbs.service.webConsole.enabled }}
+  - name: web-console
+    port: {{ .Values.hbbs.service.webConsole.port }}
+    targetPort: web-console
+    protocol: {{ .Values.hbbs.service.webConsole.protocol }}
+  {{- end }}
+  selector:
+    {{- include "rustdesk-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: hbbs
