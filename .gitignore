@@ -1,0 +1,17 @@
+# Helm
+*.tgz
+*.lock
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
