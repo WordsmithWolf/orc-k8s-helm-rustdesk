@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rustdesk-server.fullname" . }}-hbbs
+  labels:
+    {{- include "rustdesk-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: hbbs
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "rustdesk-server.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: hbbs
+  template:
+    metadata:
+      labels:
+        {{- include "rustdesk-server.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: hbbs
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rustdesk-server.serviceAccountName" . }}
+      containers:
+      - name: hbbs
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["hbbs"]
+        {{- with .Values.env }}
+        env:
+          {{- range $key, $value := . }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+        {{- end }}
+        ports:
+        - name: nat-test
+          containerPort: 21115
+          protocol: TCP
+        - name: reg-tcp
+          containerPort: 21116
+          protocol: TCP
+        - name: reg-udp
+          containerPort: 21116
+          protocol: UDP
+        - name: web-client
+          containerPort: 21118
+          protocol: TCP
+        {{- if .Values.hbbs.service.webConsole.enabled }}
+        - name: web-console
+          containerPort: 21114
+          protocol: TCP
+        {{- end }}
+        volumeMounts:
+        - name: data
+          mountPath: /root
+        {{- with .Values.hbbs.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      volumes:
+      - name: data
+        {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (printf "%s-data" (include "rustdesk-server.fullname" .)) }}
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
+      {{- with .Values.hbbs.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hbbs.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hbbs.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

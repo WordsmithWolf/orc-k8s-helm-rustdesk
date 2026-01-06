@@ -1,0 +1,80 @@
+{{- if .Values.keyExtraction.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "rustdesk-server.fullname" . }}-extract-keys
+  labels:
+    {{- include "rustdesk-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: key-extraction
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "10"
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        {{- include "rustdesk-server.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: key-extraction
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "rustdesk-server.serviceAccountName" . }}
+      containers:
+      - name: extract-keys
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          echo "=================================================="
+          echo "RustDesk Server Encryption Keys"
+          echo "=================================================="
+          echo ""
+          
+          if [ -f /root/id_ed25519.pub ]; then
+            echo "Public Key (id_ed25519.pub):"
+            cat /root/id_ed25519.pub
+            echo ""
+          else
+            echo "WARNING: Public key not found at /root/id_ed25519.pub"
+            echo "The key will be generated when hbbs starts."
+          fi
+          
+          echo ""
+          echo "=================================================="
+          echo "IMPORTANT: Store these keys in Bitwarden Secrets Manager"
+          echo "=================================================="
+          echo ""
+          echo "Steps to secure your keys:"
+          echo "1. Copy the public key above"
+          echo "2. Log into Bitwarden Secrets Manager"
+          echo "3. Create/update the following secrets in your project:"
+          echo "   - Secret Name: rustdesk-public-key"
+          echo "   - Secret Value: <paste the public key>"
+          echo ""
+          echo "4. Note the Secret ID (UUID) and update your values.yaml:"
+          echo "   bitwarden:"
+          echo "     secretMappings:"
+          echo "       - bwSecretId: \"<UUID-FROM-BITWARDEN>\""
+          echo "         secretKeyName: PUBLIC_KEY"
+          echo ""
+          echo "5. Your RustDesk clients will use this public key"
+          echo "   to encrypt their connections."
+          echo "=================================================="
+        volumeMounts:
+        - name: data
+          mountPath: /root
+          readOnly: true
+      volumes:
+      - name: data
+        {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (printf "%s-data" (include "rustdesk-server.fullname" .)) }}
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
+{{- end }}

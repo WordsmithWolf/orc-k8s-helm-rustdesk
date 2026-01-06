@@ -1,0 +1,119 @@
+replicaCount: 1
+
+image:
+  repository: rustdesk/rustdesk-server
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Environment variables for the containers
+env:
+  # Set to "Y" to force relay mode
+  # ALWAYS_USE_RELAY: "N"
+
+# Persistence for RustDesk data
+persistence:
+  enabled: true
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  # existingClaim: ""
+
+hbbs:
+  # Port configuration for hbbs
+  service:
+    type: ClusterIP
+    natTest:
+      port: 21115
+      protocol: TCP
+    registration:
+      port: 21116
+      protocol: TCP
+    registrationUdp:
+      port: 21116
+      protocol: UDP
+    webClient:
+      port: 21118
+      protocol: TCP
+    webConsole:
+      # Only available in Pro version
+      port: 21114
+      protocol: TCP
+      enabled: false
+
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+hbbr:
+  # Port configuration for hbbr
+  service:
+    type: ClusterIP
+    relay:
+      port: 21117
+      protocol: TCP
+    webClient:
+      port: 21119
+      protocol: TCP
+
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# Ingress configuration (if you want to expose web console/clients)
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: traefik
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: rustdesk.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: hbbs
+          port: 21118
+  tls: []
+  #  - secretName: rustdesk-tls
+  #    hosts:
+  #      - rustdesk.example.com
+
+# LoadBalancer configuration for direct TCP/UDP access
+loadBalancer:
+  enabled: true
+  annotations: {}
+  # For MetalLB
+  # metallb.universe.tf/allow-shared-ip: "rustdesk"
+
+# Bitwarden Secrets Manager integration for encryption keys
+bitwarden:
+  enabled: false
+  # Your Bitwarden organization ID (GUID format)
+  organizationId: ""
+  # Name of the secret containing the Bitwarden machine account token
+  authTokenSecret: "bw-auth-token"
+  # Key within the auth token secret
+  authTokenKey: "token"
+  # Map Bitwarden secret IDs to Kubernetes secret keys
+  # After initial deployment, extract keys and store in Bitwarden,
+  # then add the mappings here. See BITWARDEN_INTEGRATION.md
+  secretMappings: []
+    # - bwSecretId: "uuid-from-bitwarden"
+    #   secretKeyName: PUBLIC_KEY
+    # - bwSecretId: "uuid-from-bitwarden"
+    #   secretKeyName: PRIVATE_KEY
+
+# Key extraction job - displays encryption keys for storing in Bitwarden
+keyExtraction:
+  enabled: true
