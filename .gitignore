@@ -1,5 +1,6 @@
 # Helm
 *.tgz
+!charts/*.tgz
 *.lock
 
 # macOS
